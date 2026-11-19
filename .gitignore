@@ -1,8 +1,12 @@
-# secrets and personal data
+# secrets
 .env
 .oura_tokens.json
 .oura_tokens.tmp
-oura.db
-exports/
+
+# personal data: database, CSV exports, run log
+data/
+
+# not part of this project
+site/
+.claude/
 __pycache__/
-sync.log

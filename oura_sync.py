@@ -27,7 +27,9 @@ from dotenv import load_dotenv
 
 HERE = Path(__file__).resolve().parent
 TOKEN_FILE = HERE / ".oura_tokens.json"
-DEFAULT_DB = HERE / "oura.db"
+DATA_DIR = HERE / "data"
+DEFAULT_DB = DATA_DIR / "oura.db"
+DEFAULT_EXPORTS = DATA_DIR / "exports"
 
 AUTHORIZE_URL = "https://cloud.ouraring.com/oauth/authorize"
 TOKEN_URL = "https://api.ouraring.com/oauth/token"
@@ -232,6 +234,7 @@ class Oura:
 # --------------------------------------------------------------------------- database
 
 def open_db(path):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     db = sqlite3.connect(path)
     for name in DOC_ENDPOINTS:
         db.execute(
@@ -423,7 +426,7 @@ def cmd_export(args):
 
 def main():
     p = argparse.ArgumentParser(description="Sync Oura Ring data to SQLite.")
-    p.add_argument("--db", default=str(DEFAULT_DB), help="SQLite file (default: oura.db next to this script)")
+    p.add_argument("--db", default=str(DEFAULT_DB), help="SQLite file (default: data/oura.db)")
     sub = p.add_subparsers(dest="command", required=True)
 
     sub.add_parser("auth", help="authorise with Oura (OAuth2) and save tokens")
@@ -433,7 +436,7 @@ def main():
     s.add_argument("--since", help="backfill start date YYYY-MM-DD (default: earliest available)")
 
     e = sub.add_parser("export", help="export each table to CSV")
-    e.add_argument("--out", default=str(HERE / "exports"), help="output directory (default: ./exports)")
+    e.add_argument("--out", default=str(DEFAULT_EXPORTS), help="output directory (default: data/exports)")
 
     args = p.parse_args()
     {"auth": cmd_auth, "sync": cmd_sync, "export": cmd_export}[args.command](args)
