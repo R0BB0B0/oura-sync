@@ -1,0 +1,7 @@
+# secrets and personal data
+.env
+.oura_tokens.json
+.oura_tokens.tmp
+oura.db
+exports/
+__pycache__/
