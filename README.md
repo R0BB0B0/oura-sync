@@ -31,6 +31,18 @@ Options:
 - `export --out DIR` – choose the CSV folder.
 - `--db PATH` (before the command) – use a different SQLite file.
 
+## Weekly schedule (Windows)
+
+`run_weekly.cmd` runs `sync` then `export` and appends the output to `sync.log`. It is registered in
+Task Scheduler as **Oura weekly sync**, every Friday at 9:00 (if the PC was off, it runs at the next start-up):
+
+```
+$a = New-ScheduledTaskAction -Execute "$PWD\run_weekly.cmd" -WorkingDirectory $PWD
+$t = New-ScheduledTaskTrigger -Weekly -DaysOfWeek Friday -At 9am
+$s = New-ScheduledTaskSettingsSet -StartWhenAvailable -RunOnlyIfNetworkAvailable
+Register-ScheduledTask -TaskName 'Oura weekly sync' -Action $a -Trigger $t -Settings $s
+```
+
 ## How it works
 
 - **Auth:** OAuth2 authorisation code flow with a `state` check. Tokens go in `.oura_tokens.json` (git-ignored).
