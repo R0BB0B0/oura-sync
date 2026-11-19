@@ -33,7 +33,7 @@ AUTHORIZE_URL = "https://cloud.ouraring.com/oauth/authorize"
 TOKEN_URL = "https://api.ouraring.com/oauth/token"
 API_BASE = "https://api.ouraring.com/v2/usercollection/"
 REDIRECT_URI = "http://localhost:8080/callback"
-SCOPES = "personal daily heartrate workout tag session spo2"
+SCOPES = "personal daily heartrate workout tag session spo2 stress"
 
 # Oura launched in 2015; nothing older than this can exist.
 BACKFILL_FLOOR = date(2015, 1, 1)
